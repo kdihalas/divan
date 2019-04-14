@@ -1,18 +1,17 @@
-[couchdb]
-enabled = true
-name = "couchdb"
+[consumer]
+provider = "redis"
 server = "localhost"
-port = 5846
-
-[redis]
-enabled = true
-name = "redis"
-server = "localhost"
-port = 11300
+port = 6379
+db = 0
+password = ""
 
 [[sync]]
   [sync.products]
-    from = "redis"
-    to = "couchdb"
+    provider = "couchdb"
+    server = "localhost"
+    port = 5984
+    username = "admin"
+    password = "admin"
+    database = "products"
     buffer = 1024
-    interval = "5s"
+    interval = 5
