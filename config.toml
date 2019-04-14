@@ -1,0 +1,18 @@
+[couchdb]
+enabled = true
+name = "couchdb"
+server = "localhost"
+port = 5846
+
+[redis]
+enabled = true
+name = "redis"
+server = "localhost"
+port = 11300
+
+[[sync]]
+  [sync.products]
+    from = "redis"
+    to = "couchdb"
+    buffer = 1024
+    interval = "5s"
