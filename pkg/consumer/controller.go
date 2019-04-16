@@ -35,7 +35,7 @@ func (c *Consumer) spawn(consumerConf *ConsumerConfig) {
 	interval := conf["interval"].(int)
 	buffer := conf["buffer"].(int)
 
-	consumerClient := *c.getConsumerProvider(conf["from"].(string))
+ 	consumerClient := *c.getConsumerProvider(conf["from"].(string))
 	backendClient := *c.getBackendProvider(conf["to"].(string))
 
 	for {
@@ -46,6 +46,8 @@ func (c *Consumer) spawn(consumerConf *ConsumerConfig) {
 			err := backendClient.Update(id, doc)
 			if err == nil {
 				consumerClient.DeleteKey(key)
+			} else {
+				log.Error(err)
 			}
 		}
 		time.Sleep(time.Duration(interval) * time.Second)

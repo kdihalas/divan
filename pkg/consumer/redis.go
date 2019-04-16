@@ -56,15 +56,10 @@ func (r *Redis) DeleteKey(key string) {
 	r.client.Del(key)
 }
 
-func (r *Redis) DeleteKeys(keys []string) {
-
-}
-
 func NewRedisConsumerProvider(config map[string]interface{}) *Redis{
 	re := &Redis{
 		config: config,
 	}
-
 	re.connect()
 	return re
 }

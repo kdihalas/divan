@@ -7,5 +7,9 @@ func GetConsumerProvider(conf map[string]interface{}) consumer.ConsumerProvider 
 		pro := consumer.NewRedisConsumerProvider(conf)
 		return pro
 	}
+	if conf["provider"] == "mqtt" {
+		pro := consumer.NewMqttConsumerProvider(conf)
+		return pro
+	}
 	return nil
 }

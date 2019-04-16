@@ -17,6 +17,7 @@ var Consumers = make(map[string]consumer.ConsumerProvider)
 var Backends = make(map[string]provider.Provider)
 
 func main() {
+	log.SetLevel(log.DebugLevel)
 	time.Sleep(1 * time.Second)
 	c := viper.Get("consumers").([]interface{})
 	b := viper.Get("backends").([]interface{})

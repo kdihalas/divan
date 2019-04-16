@@ -5,6 +5,16 @@ consumers:
     port: 6379
     db: 0
     password: ""
+  - name: mqtt-iotech
+    provider: mqtt
+    server: mq.iotech.gr
+    port: 1883
+    clientid: "divan"
+    username: "kdihalas"
+    password: "@kostas12345"
+    network: "tcp"
+    topic: "/env"
+    buffer: 5
 
 backends:
   - name: couchdb-local
@@ -21,8 +31,8 @@ funnels:
     to: couchdb-local
     buffer: 1024
     interval: 5
-  - name: orders
-    from: redis-local
+  - name: env
+    from: mqtt-iotech
     to: couchdb-local
-    buffer: 1024
+    buffer: 0
     interval: 5
