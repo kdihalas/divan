@@ -16,9 +16,9 @@ type Redis struct {
 
 func (r *Redis) connect() {
 	r.client = redis.NewClient(&redis.Options{
-		Addr: fmt.Sprintf("%s:%d", r.config["server"].(string), int(r.config["port"].(int64))),
+		Addr: fmt.Sprintf("%s:%d", r.config["server"].(string), r.config["port"]),
 		Password: viper.GetString(r.config["password"].(string)),
-		DB: int(r.config["db"].(int64)),
+		DB: r.config["db"].(int),
 	})
 }
 
@@ -32,13 +32,13 @@ func (r *Redis) Get(key string) interface{} {
 	return doc
 }
 
-func (r *Redis) GetKeys(prefix string, buffer int64) []string{
+func (r *Redis) GetKeys(prefix string, buffer int) []string{
 	var cursor uint64
 	var n int
 	var keys []string
 	for {
 		var err error
-		keys, cursor, err = r.client.Scan(cursor, fmt.Sprintf("%s*", prefix), buffer).Result()
+		keys, cursor, err = r.client.Scan(cursor, fmt.Sprintf("%s*", prefix), int64(buffer)).Result()
 		if err != nil {
 			log.Error(err)
 		}

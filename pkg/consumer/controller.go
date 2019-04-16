@@ -9,9 +9,9 @@ import (
 )
 
 type Consumer struct {
-	consumers chan *ConsumerConfig
-	config map[string]interface{}
-	client ConsumerProvider
+	consumer chan *ConsumerConfig
+	consumers map[string]ConsumerProvider
+	backends map[string]provider.Provider
 }
 
 type ConsumerConfig struct {
@@ -22,60 +22,59 @@ type ConsumerConfig struct {
 
 func (c *Consumer) Start() {
 	log.Info("Starting controller")
-	select {
-	case consumer := <- c.consumers:
-		c.spawn(consumer)
+	for consumerConf := range c.consumer {
+		go c.spawn(consumerConf)
 	}
 
 }
 
-func (c *Consumer) spawn(consumer *ConsumerConfig) {
-	log.WithField("ID", consumer.ID).Info("New consumer started for datbase/table/prefix:", consumer.Name)
-	conf := consumer.Config.(map[string]interface{})
+func (c *Consumer) spawn(consumerConf *ConsumerConfig) {
+	log.WithField("ID", consumerConf.ID).Info("New consumer started for datbase/table/prefix:", consumerConf.Name)
+	conf := consumerConf.Config.(map[string]interface{})
 
-	interval := conf["interval"].(int64)
-	buffer := conf["buffer"].(int64)
-	backend := c.getProvider(conf)
+	interval := conf["interval"].(int)
+	buffer := conf["buffer"].(int)
+
+	consumerClient := *c.getConsumerProvider(conf["from"].(string))
+	backendClient := *c.getBackendProvider(conf["to"].(string))
+
 	for {
-		keys := c.client.GetKeys(consumer.Name, buffer)
+		keys := consumerClient.GetKeys(conf["name"].(string), buffer)
 		for _, key := range keys {
 			id := strings.Split(key, "/")[1]
-			doc := c.client.Get(key)
-			err := backend.Update(id, doc)
+			doc := consumerClient.Get(key)
+			err := backendClient.Update(id, doc)
 			if err == nil {
-				c.client.DeleteKey(key)
+				consumerClient.DeleteKey(key)
 			}
 		}
 		time.Sleep(time.Duration(interval) * time.Second)
 	}
 }
 
-func (c *Consumer) getConsumerProvider(conf map[string]interface{}) ConsumerProvider {
-	if conf["provider"] == "redis" {
-		pro := NewRedisConsumerProvider(conf)
-		return pro
+func (c *Consumer) getConsumerProvider(name string) *ConsumerProvider{
+	for consumerName, consumerProvider := range c.consumers {
+		if name == consumerName {
+			return &consumerProvider
+		}
 	}
 	return nil
 }
 
-func (c *Consumer) SetConsumerProvider() {
-	c.client = c.getConsumerProvider(c.config)
-}
-
-func (c *Consumer) getProvider(conf map[string]interface{}) provider.Provider {
-	if conf["provider"] == "couchdb" {
-		pro := provider.NewCouchDbProvider(conf)
-		return pro
+func (c *Consumer) getBackendProvider(name string) *provider.Provider{
+	for backendName, backendProvider := range c.backends {
+		if name == backendName {
+			return &backendProvider
+		}
 	}
-
 	return nil
 }
 
-func NewConsumerController(consumers chan *ConsumerConfig, config map[string]interface{}) *Consumer {
+func NewConsumerController(consumer chan *ConsumerConfig, consumers map[string]ConsumerProvider, backends map[string]provider.Provider) *Consumer {
 	con := &Consumer{
+		consumer: consumer,
 		consumers: consumers,
-		config: config,
+		backends: backends,
 	}
-	con.SetConsumerProvider()
 	return con
 }

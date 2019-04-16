@@ -15,7 +15,7 @@ type Couchdb struct {
 
 func (c *Couchdb) connect() {
 	var timeout = time.Duration(500 * time.Millisecond)
-	conn, err := couchdb.NewConnection(c.config["server"].(string),int(c.config["port"].(int64)),timeout)
+	conn, err := couchdb.NewConnection(c.config["server"].(string),c.config["port"].(int),timeout)
 	if err != nil {
 		log.Error(nil)
 	}
