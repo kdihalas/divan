@@ -1,5 +1,10 @@
 pipeline {
-  agent any
+  agent {
+    docker {
+      image 'golang:buster'
+    }
+
+  }
   stages {
     stage('build') {
       steps {
