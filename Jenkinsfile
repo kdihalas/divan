@@ -13,18 +13,9 @@ export GOCACHE=$GOPATH/.cache
 export GOENV=$GOPATH/.env
 export GO111MODULE=on
 
-go mod init github.com/kdihalas/divan'''
-      }
-    }
-
-    stage('mod') {
-      steps {
-        sh '''export GOPATH=$(pwd)
-export GOCACHE=$GOPATH/.cache
-export GOENV=$GOPATH/.env
-export GO111MODULE=on
-
-go get -u -v ./..'''
+go mod init github.com/kdihalas/divan
+rm -rf Gopkg.*
+go get -u -v'''
       }
     }
 
