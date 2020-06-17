@@ -4,7 +4,8 @@ pipeline {
     stage('install go') {
       steps {
         sh '''WORKROOT=$(pwd)
-cd ${WORKROOT}
+mkdir ${WORKROOT}/tmp
+cd ${WORKROOT}/tmp
 
 # unzip go environment
 go_env="go1.13.12.linux-amd64.tar.gz"
@@ -21,17 +22,13 @@ rm -rf $go_env
 # prepare PATH, GOROOT and GOPATH
 export PATH=$(pwd)/go/bin:$PATH
 export GOROOT=$(pwd)/go
-export GOPATH=$(pwd)
+export GOPATH=$(pwd)'''
+      }
+    }
 
-# build
-ls -lha
-go build
-if [ $? -ne 0 ];
-then
-    echo "fail to go build"
-    exit 1
-fi
-echo "OK for go build"'''
+    stage('build') {
+      steps {
+        sh 'go get ./...'
       }
     }
 
