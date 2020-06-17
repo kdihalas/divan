@@ -6,9 +6,11 @@ pipeline {
 
   }
   stages {
-    stage('build') {
+    stage('deps') {
       steps {
-        sh 'go get ./...'
+        sh '''export GOPATH=$(pwd)
+
+go get -u github.com/golang/dep/cmd/dep'''
       }
     }
 
