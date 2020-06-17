@@ -1,7 +1,7 @@
 pipeline {
   agent {
     docker {
-      image 'golang'
+      image 'golang:latest'
     }
 
   }
