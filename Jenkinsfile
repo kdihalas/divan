@@ -22,7 +22,7 @@ cd ${GOPATH}/src/${PROJECT_PATH}
 go get -u github.com/golang/dep/cmd/dep
 
 dep ensure
-go build cmd/*.go pkg/consumer/*.go pkg/provider/*.go'''
+go build ./...'''
       }
     }
 
