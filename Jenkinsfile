@@ -11,9 +11,10 @@ pipeline {
         sh '''export GOPATH=$(pwd)
 export GOCACHE=$GOPATH/.cache
 export GOENV=$GOPATH/.env
+export GO111MODULE=on
 
-go get -u github.com/golang/dep/cmd/dep
-ls -lha'''
+go get -u -v ./..
+'''
       }
     }
 
