@@ -11,9 +11,13 @@ pipeline {
         sh '''PROJECT_PATH=github.com/kdihalas/divan
 
 mkdir -p ${GOPATH}/src/${PROJECT_PATH}
+
 cp -r ${WORKSPACE}/* ${GOPATH}/src/${PROJECT_PATH}
+
 cd ${GOPATH}/src/${PROJECT_PATH}
-go build'''
+
+go get
+go build cmd/main.go'''
       }
     }
 
