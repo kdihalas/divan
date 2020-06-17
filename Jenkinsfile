@@ -8,8 +8,9 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        sh '''GOCACHE=$(pwd)/.cache/go-build
-GOENV=$(pwd)/.config/go/env
+        sh '''export GOCACHE=$(pwd)/.cache/go-build
+export GOENV=$(pwd)/.config/go/env
+
 PROJECT_PATH=github.com/kdihalas/divan
 
 mkdir -p ${GOPATH}/src/${PROJECT_PATH}
