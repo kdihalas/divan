@@ -16,7 +16,9 @@ cp -r ${WORKSPACE}/* ${GOPATH}/src/${PROJECT_PATH}
 
 cd ${GOPATH}/src/${PROJECT_PATH}
 
-go get
+go get -u github.com/golang/dep/cmd/dep
+
+dep install
 go build cmd/main.go'''
       }
     }
