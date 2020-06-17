@@ -3,9 +3,7 @@ pipeline {
   stages {
     stage('install go') {
       steps {
-        sh '''#!/usr/bin/bash
-
-WORKROOT=$(pwd)
+        sh '''WORKROOT=$(pwd)
 cd ${WORKROOT}
 
 # unzip go environment
