@@ -1,10 +1,5 @@
 pipeline {
-  agent {
-    node {
-      def root = tool name: 'default', type: 'go'
-    }
-
-  }
+  agent any
   stages {
     stage('build') {
       steps {
