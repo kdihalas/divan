@@ -12,7 +12,8 @@ pipeline {
 export GOCACHE=$GOPATH/.cache
 export GOENV=$GOPATH/.env
 
-go get -u github.com/golang/dep/cmd/dep'''
+go get -u github.com/golang/dep/cmd/dep
+ls -lha'''
       }
     }
 
