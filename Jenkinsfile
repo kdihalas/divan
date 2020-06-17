@@ -6,17 +6,14 @@ pipeline {
 
   }
   stages {
-    stage('go build') {
+    stage('Build') {
       steps {
-        ws(dir: '${JENKINS_HOME}/jobs/${JOB_NAME}/builds/${BUILD_ID}/') {
-          sh '''export GOCACHE=$(pwd)/.cache
-export GOENV=$(pwd)/.env
-export GO111MODULE=on
+        sh '''PROJECT_PATH=github.com/kdihalas/divan
 
-go mod init github.com/kdihalas/divan
-go get -u -v'''
-        }
-
+cd ${GOPATH}/src
+mkdir -p ${GOPATH}/src/${PROJECT_PATH}
+cp -r ${WORKSPACE}/* ${GOPATH}/src/${PROJECT_PATH}
+go build'''
       }
     }
 
