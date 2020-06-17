@@ -12,9 +12,14 @@ pipeline {
 export GOCACHE=$GOPATH/.cache
 export GOENV=$GOPATH/.env
 export GO111MODULE=on
-
-go get -u -v ./..
 '''
+      }
+    }
+
+    stage('mod') {
+      steps {
+        sh '''go mod init
+go get -u -v ./..'''
       }
     }
 
