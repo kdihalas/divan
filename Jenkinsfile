@@ -13,7 +13,7 @@ export GOCACHE=$GOPATH/.cache
 export GOENV=$GOPATH/.env
 export GO111MODULE=on
 
-go mod init'''
+go mod init github.com/kdihalas/divan'''
       }
     }
 
