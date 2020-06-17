@@ -8,9 +8,8 @@ pipeline {
   stages {
     stage('deps') {
       steps {
-        sh '''export GOPATH=$(pwd)
-export GOCACHE=$GOPATH/.cache
-export GOENV=$GOPATH/.env
+        sh '''export GOCACHE=.cache
+export GOENV=.env
 export GO111MODULE=on
 
 go mod init github.com/kdihalas/divan
