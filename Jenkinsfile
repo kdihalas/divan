@@ -7,14 +7,25 @@ pipeline {
   }
   stages {
     stage('deps') {
-      steps {
-        sh '''export GOCACHE=$(pwd)/.cache
+      parallel {
+        stage('deps') {
+          steps {
+            sh '''export GOCACHE=$(pwd)/.cache
 export GOENV=$(pwd)/.env
 export GO111MODULE=on
 
 go mod init github.com/kdihalas/divan
 rm -rf Gopkg.*
 go get -u -v'''
+          }
+        }
+
+        stage('env') {
+          steps {
+            sh 'env'
+          }
+        }
+
       }
     }
 
