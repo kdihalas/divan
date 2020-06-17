@@ -14,7 +14,6 @@ export GOENV=$(pwd)/.env
 export GO111MODULE=on
 
 go mod init github.com/kdihalas/divan
-rm -rf Gopkg.*
 go get -u -v'''
         }
 
