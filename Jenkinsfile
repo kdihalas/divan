@@ -21,7 +21,7 @@ cd ${GOPATH}/src/${PROJECT_PATH}
 
 go get -u github.com/golang/dep/cmd/dep
 
-dep install
+dep ensure
 go build cmd/main.go'''
       }
     }
