@@ -6,7 +6,7 @@ pipeline {
 
   }
   stages {
-    stage('create workspace') {
+    stage('go build') {
       steps {
         ws(dir: '${JENKINS_HOME}/jobs/${JOB_NAME}/builds/${BUILD_ID}/') {
           sh '''export GOCACHE=$(pwd)/.cache
