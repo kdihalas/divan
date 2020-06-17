@@ -24,7 +24,7 @@ export GOROOT=$(pwd)/go
 export GOPATH=$(pwd)
 
 # build
-cd path/to/your/project
+ls -lha
 go build
 if [ $? -ne 0 ];
 then
